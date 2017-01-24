@@ -1,11 +1,49 @@
 # In-Class Programming Activity, Day 1
 
-Your work goes here ...
+## Madeline Olson
 
+## Task 1
 
+```{r}
+library(mosaicData)
+```
+
+## Task 2
+
+```{r}
+
+taskT='Today is'
+task2=paste(taskT,date())
+
+```
+
+## Task 3
+
+```{r}
+task3a=colnames(Galton)
+  
+task3b=nrow(Galton)
+  
+task3c=mean(Galton$height)
+```
+
+## Task 4
+
+```{r}
+task4=matrix(c(1,4,2,5,3,6), nrow=2, ncol=3)
+```
+
+## Task 5
+
+```{r}
+task5x=runif(1000,min=0,max=1)
+task5y=runif(1000,min=0,max=1)
+a=(1:1000)
+b=sqrt((task5x[a]^2)+(task5y[a]^2))
+task5pi=sum(b<=1)/1000
+```
 
 ## Test statements
 
-```{r}
-scoreActivity::score253(1)
-```
+
+## scoreActivity::score253(1)
