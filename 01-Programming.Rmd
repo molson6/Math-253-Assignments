@@ -45,5 +45,6 @@ task5pi=sum(b<=1)/1000
 
 ## Test statements
 
-
-## scoreActivity::score253(1)
+```{r}
+scoreActivity::score253(1)
+```
