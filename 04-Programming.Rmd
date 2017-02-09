@@ -2,7 +2,58 @@
 
 Your work goes here ...
 
+# Maddy Olson
 
+## Task 1
+
+```{r}
+plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
+```
+
+## Task 2
+
+```{r}
+plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
+x1=3
+y1=3
+x2=15
+y2=15
+lines(c( x1, x1, x2, x2, x1), c( y1, y2, y2, y1, y1))
+```
+
+## Task 3
+
+```{r}
+
+x3=50
+y3=60
+dia=40
+angs=seq(0, 2*pi, by=pi/24)
+plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
+lines(c(x3+(cos(angs))*40), c(y3+(sin(angs))*40))
+
+```
+
+## Task 4
+
+```{r}
+x4=5+abs(cos(angs))
+y4=5+abs(sin(angs))
+rads=seq(0,9.6, by=.2)
+plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
+polygon(c(30+abs((cos(angs)))*15), c(30+abs((sin(angs)))*15))
+
+```
+
+#can't quite get more than one top of loop...
+
+## Task 5
+
+```{r}
+plot(1, xlim = c(0, 100), ylim = c(0,100), type="n")
+polygon(c(50,55,80,60,70,50,30,40,20,45),c(80,60,70,40,20,30,20,40,70,60), col="slateblue", lwd=5)
+
+```
 
 ## Test statements
 
