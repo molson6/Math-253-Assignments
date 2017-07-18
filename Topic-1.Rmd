@@ -1,2 +1,205 @@
 # Topic 1 Exercises
 
+#Madeline Olson
+
+## Discussion Questions
+
+# 2.4.1
+
+# a
+
+An inflexible method would be better, since there are few predictors for a large sample a flexible method would produce unnecessary noise.
+
+# b
+
+A flexible method would determine which perdictors have the greatest impact when a inflexible method would diminish these effects.
+
+# c
+
+A flexible method would fit the non-linear relationship more accurately than an inflexible one.
+
+# d
+
+A flexible method would accomodate the variance better than an inflexible method.
+
+# 2.4.6
+
+The parametric approach assumes a linear relationship, while non-parametric approach does not assume any shape. While the parametric approach produces a simplified estimate it is this simplicity that is also limiting. Its simplicity makes the model applicable in more general situations but allows for the estimates to have a greater margin of error. 
+
+## Computing Assignment
+
+# 2.4.8
+
+# a
+
+```{r}
+College=read.csv("/home/local/MAC/molson6/Math 253 Assignments SSH/College.csv")
+```
+
+# b
+
+```{r}
+rownames(College)=College[,1]
+
+College=College[,-1]
+```
+
+# c i)
+
+```{r}
+summary(College)
+```
+
+# c ii)
+
+```{r}
+pairs(College[,1:10])
+```
+
+# c iii)
+
+```{r}
+plot(College$Private,College$Outstate)
+```
+
+# c iv)
+
+```{r}
+Elite=rep("No", nrow(College))
+Elite [College$Top10perc >50] ="Yes"
+Elite= as.factor(Elite)
+College= data.frame(College,Elite)
+summary(College$Elite)
+plot(College$Elite,College$Outstate)
+```
+
+# c v)
+
+```{r}
+par(mfrow=c(2,2))
+hist(College$Enroll)
+hist(College$Enroll, breaks = 50)
+hist(College$Grad.Rate)
+hist(College$Grad.Rate, breaks = 30)
+hist(College$Books)
+hist(College$Books, breaks = 25)
+
+```
+
+# c vi)
+
+```{r}
+pairs(~ Room.Board + Books + Outstate + Personal , data = College )
+pairs (~ Outstate + PhD + S.F.Ratio + Grad.Rate + F.Undergrad + P.Undergrad, data=College)
+```
+
+# 
+In these plots we see that costs for books and personal spending are fairly consistent despite highly variable room and board and outstate tuition costs. Additionally increased tuition does not guarantee better quality of education as indicated by increased tuition not providing higher student-faculty ratios. 
+
+# 2.4.9
+
+```{r}
+Auto=read.csv("/home/local/MAC/molson6/Math 253 Assignments SSH/Auto.csv")
+Auto=na.omit(Auto)
+Auto=Auto[-c(33,127,331,337,355),]
+Auto$horsepower = as.numeric(Auto$horsepower )
+Auto$cylinders = as.factor(Auto$cylinders )
+Auto$year = as.factor(Auto$year )
+Auto$origin = as.factor(Auto$origin )
+```
+
+# a
+
+Quantative - mpg, displacement, weight, acceleration, horsepower
+Qualitative - cylinders, year, origin, name,
+
+# b
+
+```{r}
+range(Auto$mpg)
+range(Auto$displacement)
+range(Auto$horsepower)
+range(Auto$weight)
+range(Auto$acceleration)
+```
+
+# c
+
+```{r}
+mean(Auto$mpg)
+sd(Auto$mpg)
+mean(Auto$displacement)
+sd(Auto$displacement)
+mean(Auto$horsepower)
+sd(Auto$horsepower)
+mean(Auto$weight)
+sd(Auto$weight)
+mean(Auto$acceleration)
+sd(Auto$acceleration)
+```
+
+# d
+
+```{r}
+Auto[-c(10,86),]
+mean(Auto$mpg)
+sd(Auto$mpg)
+mean(Auto$displacement)
+sd(Auto$displacement)
+mean(Auto$horsepower)
+sd(Auto$horsepower)
+mean(Auto$weight)
+sd(Auto$weight)
+mean(Auto$acceleration)
+sd(Auto$acceleration)
+```
+
+# e
+
+```{r}
+
+pairs(~ mpg + cylinders + displacement + horsepower + weight + acceleration + year ,data=Auto)
+```
+
+#
+We can see that year has little effect on the predictors. Horsepower appears to create 2 major groups with most predictors. 
+
+# f
+
+Several factors affect mpg but each has a different kind of relationship. Fewer cylinders allows for higher mpg. Lower displacement also allows mpg to exceed 20 mpg. Weight seems to have the most obvious effect on mpg, low weight increases mpg.
+
+
+## Theory Assignment
+
+# 2.4.2
+
+# a
+regression, inference, n=500, p=3
+
+# b
+classification, inference, n=20, p=14
+
+# c
+regression, prediction, n=52, p=4
+
+# 2.4.7
+
+# a
+
+```{r}
+obs=matrix(c(0,2,0,0,-1,1,3,0,1,1,0,1,0,0,3,2,1,1), nrow=6, ncol=3 )
+obs
+dist(obs)
+```
+
+ # b
+ 
+ When K=1 we have a very flexible model where most observations have a red outcome. 
+ 
+ # c
+ 
+ When K=3 The prediction is less flexible increasing the model's Green predictions.
+ 
+ # d
+ 
+ If the Bays boundary is non-linear then K should be a low number. This allows for flexibility in the boundaries predicted by KNN.

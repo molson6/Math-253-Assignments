@@ -1,2 +1,234 @@
 # Topic 2 Exercises: Linear Regression
 
+# Madeline Olson
+
+# Computing
+
+# 3.6.1
+
+```{r}
+library(MASS)
+library(ISLR)
+```
+
+# 3.6.2
+
+```{r}
+names(Boston)
+
+lm.fit=lm(Boston$medv~Boston$lstat)
+lm.fit
+summary(lm.fit)
+names(lm.fit)
+coef(lm.fit)
+confint(lm.fit)
+predict(lm.fit, data.frame(lstat=c(5,10,15)), interval="confidence")
+predict(lm.fit, data.frame(lstat=c(5,10,15)), interval="prediction")
+par(mfrow=c(1,2))
+plot(Boston$lstat,Boston$medv)
+abline(lm.fit, lwd=3)
+abline(lm.fit, lwd=3,  col="red")
+plot(Boston$lstat, Boston$medv, col="red")
+plot(Boston$lstat, Boston$medv, pch=20)
+plot(Boston$lstat, Boston$medv, pch="+")
+plot(1:20,1:20,pch=1:20)
+par(mfrow=c(2,2))
+plot(lm.fit)
+plot(predict(lm.fit), residuals(lm.fit))
+plot(predict(lm.fit), rstudent(lm.fit))
+plot(hatvalues(lm.fit))
+which.max(hatvalues(lm.fit))
+
+```
+
+
+# 3.6.3
+
+```{r}
+lm.fit=lm(medv~lstat+age, data=Boston)
+summary(lm.fit)
+lm.fit=lm(medv~., data=Boston)
+summary(lm.fit)
+library(car)
+vif(lm.fit)
+lm.fit1=lm(medv~.-age, data=Boston)
+summary(lm.fit)
+lm.fit1=update(lm.fit, ~.-age, data=Boston)
+```
+
+# 3.6.4
+
+```{r}
+summary(lm(medv~lstat*age,data=Boston))
+```
+
+
+# 3.6.5
+
+```{r}
+lm.fit2=lm(medv~lstat+I(lstat^2), data=Boston)
+summary(lm.fit2)
+lm.fit=lm(medv~lstat, data=Boston)
+anova(lm.fit, lm.fit2)
+par(mfrow=c(2,2))
+plot(lm.fit2)
+lm.fit5=lm(medv~poly(lstat,5), data=Boston)
+summary(lm.fit5)
+summary(lm(medv~log(rm), data=Boston))
+```
+
+# 3.6.6
+
+```{r}
+names(Carseats)
+lm.fit=lm(Sales~.+Income:Advertising+Price:Age, data=Carseats)
+summary(lm.fit)
+
+contrasts(Carseats$ShelveLoc)
+
+```
+
+# 3.6.7
+
+```{r}
+LoadLibraries=function(){
+ library(ISLR)
+ library(MASS)
+ print("The libraries have been loaded.")
+}
+LoadLibraries
+LoadLibraries()
+
+```
+
+# 3.7.13
+
+```{r}
+set.seed(1)
+```
+
+# a
+```{r}
+x=rnorm(100, 0, 1)
+```
+
+# b
+```{r}
+eps=rnorm(100, 0, 0.25)
+```
+
+# c
+```{r}
+y=-1+0.5*x+eps
+length(y)
+```
+
+# d
+```{r}
+plot(y~x)
+```
+#
+There appears to be a linear trend
+
+# e
+```{r}
+lm.fit13e=lm(y~x)
+summary(lm.fit13e)
+```
+#
+This model fits the data quite well, ^B0 and ^B1 are nearly the same as B0 and B1 indicated by the low p-values.
+
+
+# f
+```{r}
+plot(y~x)
+abline(lm.fit13e, col="turquoise", lwd=2)
+legend("topleft", c("Regression Line"), lwd=2, col="turquoise")
+```
+
+# g
+```{r}
+lm.fit13g=lm(y~x+I(x^2))
+summary(lm.fit13g)
+```
+
+#
+The quadratic term has a non-significant p-value suggesting no improvement from the addition.
+
+# h
+```{r}
+eps2=rnorm(100, 0, 0.15)
+y2=-1+0.5*x+eps2
+length(y2)
+plot(y2~x)
+lm.fit13h=lm(y2~x)
+summary(lm.fit13h)
+abline(lm.fit13h, col="turquoise", lwd=2)
+legend("topleft", c("Regression Line"), lwd=2, col="turquoise")
+```
+
+# 
+We see that graphically the line fits the points better, this is reinforced by the increased R-squared
+
+# i
+```{r}
+eps3=rnorm(100, 0, 0.35)
+y3=-1+0.5*x+eps3
+length(y3)
+plot(y3~x)
+lm.fit13i=lm(y3~x)
+summary(lm.fit13i)
+abline(lm.fit13i, col="turquoise", lwd=2)
+legend("topleft", c("Regression Line"), lwd=2, col="turquoise")
+```
+
+#
+The line fits the points less closely this is reflected in a lower R-squared. The model is still significant.
+
+# j
+```{r}
+
+confint(lm.fit13e)
+confint(lm.fit13h)
+confint(lm.fit13i)
+```
+
+# 
+The confidence intervals decerase in range with less noise and increase with more noise.
+
+# Theory
+
+# p. 66
+
+There is always error associated with a model and we cannot strictly determine whether or how much variance can be attributed to common variance or errors in the model.
+
+# p. 77
+
+If p>n then at least one point must be a result of an interaction of two predictors, this means we would be unable to deteremine a single predictor's individual contribution with confidence.
+
+# 3.7.3
+
+# a
+iii. For fixed IQ and GPA, males earn more than females with high enough GPA. In the model we determine that when the GPA is over 3.5 males overcome the Gender predictor (X3) from the interaction predictor (X5).
+
+# b
+```{r}
+50+(20*4.0)+(0.07*110)+(35*1)+(0.01*110*4.0)+(-10*4.0*1)
+```
+
+# c
+False, because this is an interaction term with a value often the 100's the coefficient is low to reflect the magnitude of one of the terms.
+
+# 3.7.4
+
+# a
+The RSS would have to be lower in the cubic regression becasue it is able to accomodate the training data more closely becasue is is able to account for the noise in the data.
+
+# b
+The RSS for the training data would be lower in the linear regression since it is a closer estimate to the true form.
+
+# c
+Unclear, if the true form is quadratic neither may be clearly better, however if its several orders higher we would expect the cubic to be lower.
+
+# d
+Same as the from part c, if the true relationship is cubic or higher order the cubic would better account for the data than the linear model.
