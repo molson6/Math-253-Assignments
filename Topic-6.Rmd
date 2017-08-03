@@ -1,2 +1,124 @@
 # Topic 6 Exercises: Selecting Model Terms
 
+# Madeline Olson
+
+# Theory
+
+# 6.8.1
+
+# a
+Best subset, because this model analyses every possible combination of predictors while the other methods 'build' a model based on the previous iteration. 
+
+# b
+Best subset will most likely have the smallest test RSS for similar reasoning as in part a. 
+
+# c
+i. T, the k+1-variable model is built from the k-variable model with the addition of another predictor
+ii. T, the k-vairable model is made from the exclusion of a predictor from the k+1-variable model
+iii. F, because these models are build from p or 1 predictors they may come to different conclusions about which predictors are significant
+iv. F, same as c-iii.
+v. F, best subset analyses all combinations of predictors for different # of variables and between two models certain predictos may be 'swapped'.
+
+# 6.8.2
+
+# a 
+iii) similar to ridge regression, lasso method produces a less flexible model with decreased variance, just with fewer predictors
+
+# b 
+iii) ridge regression is less flexible and able to geratly decrease variance with little bias increase.
+
+# c 
+ii) non-linear methods are able to 'follow' the data more closely than least squares but becasue of this they are likely to have high variance.
+
+# Applied
+
+# 6.8.9
+
+# a
+```{r}
+#College=read.csv("/home/local/MAC/molson6/Math 253 Assignments SSH/College.csv")
+library(ISLR)
+train=sample(1:dim(College)[1],(dim(College)[1]/2))
+test=-train
+College.train=College[train,]
+College.test=College[test,]
+```
+
+# b
+```{r}
+lm.fit=lm(Apps~., data=College.train[,-1])
+lm.pred=predict(lm.fit, College.test)
+mean((College.test[,"Apps"] - lm.pred)^2)
+```
+# c
+```{r}
+
+library(glmnet)
+x=model.matrix(Apps~., College[,-1])
+y=College$Apps
+grid=10^seq(10,-2,length=100)
+ridge.mod=glmnet(x,y,alpha=0,lambda=grid)
+Apps.test=College$Apps[test]
+ridge.mod=glmnet(x[train,], y[train], alpha=0, lambda=grid, thresh=1e-12)
+set.seed(1)
+cv.out=cv.glmnet(x[train,],y[train], alpha=0)
+plot(cv.out)
+bestlam=cv.out$lambda.min
+bestlam
+ridge.pred=predict(ridge.mod,s=bestlam,newx=x[test,])
+mean((ridge.pred-Apps.test)^2)
+out=glmnet(x,y,alpha=0)
+predict(out,type="coefficients",s=bestlam)[1:19]
+```
+
+MSE=1197627
+
+# d
+```{r}
+lasso.mod=glmnet(x[train,],y[train],alpha = 1,lambda = grid)
+plot(lasso.mod)
+set.seed(1)
+cv.out=cv.glmnet(x[train,], y[train],alpha=1)
+plot(cv.out)
+bestlam=cv.out$lambda.min
+lasso.pred=predict(lasso.mod,s=bestlam,newx=x[test,])
+mean((lasso.pred-Apps.test)^2)
+out=glmnet(x,y,alpha=1,lambda=grid)
+lasso.coef=predict(out, type="coefficients",s=bestlam)[1:18,]
+lasso.coef
+```
+
+MSE= 1274204, 13 coefficients are non-zero
+
+# e
+```{r}
+library(pls)
+set.seed(1)
+pcr.fit=pcr(Apps~., data=College[,-1],subset=train,scale=TRUE, validation="CV")
+
+validationplot(pcr.fit,val.type = "MSEP")
+summary(pcr.fit)
+pcr.pred=predict(pcr.fit,x[test,-1],ncomp=9)
+mean((pcr.pred-Apps.test)^2)
+```
+
+MSE=1554651
+
+# f
+```{r}
+set.seed(1)
+pls.fit=plsr(Apps~.,data=College[,-1], subset=train, scale=TRUE,validation="CV")
+summary(pls.fit)
+validationplot(pls.fit,val.type = "MSEP")
+pls.pred=predict(pls.fit,x[test,-1],ncomp=5)
+mean((pls.pred-Apps.test)^2)
+```
+
+MSE=1359942
+
+# g
+
+MSE Linear=1313345, Ridge=1197627, Lasso=1274204, PCR=1554651, PLS=1359942
+Ridge regression gives the lowest MSE of the 5 methods. The Linear and PLS model give similar MSE and PCR gives the highest.
+
+
