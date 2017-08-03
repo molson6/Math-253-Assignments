@@ -1,2 +1,92 @@
 # Topic 7 Exercises: Nonlinear regression
 
+# Madeline Olson
+
+# Programming
+
+# 7.9.11
+
+#a
+```{r}
+set.seed(1)
+x1=rnorm(100)
+x2=rnorm(100)
+eps=rnorm(100,sd=0.1)
+y= -3.2+18.1*x1-0.2*x2+eps
+```
+
+#b
+```{r}
+beta0=rep(NA,1000)
+beta1=rep(NA,1000)
+beta2=rep(NA,1000)
+beta1[1]=22
+```
+
+#c
+```{r}
+#a=y-beta1*x1
+#beta2=lm(a~x2)$coef[2]
+```
+
+#d
+```{r}
+#a=y-beta2*x2
+#beta1=lm(a~x1)$coef[2]
+```
+
+#e
+```{r}
+for (i in 1:1000)
+  {
+  a=y-beta1[i]*x1
+  beta2[i]=lm(a~x2)$coef[2]
+  a=y-beta2[i]*x2
+  lm.fit=lm(a~x1)
+  if (i<1000){
+    beta1[i+1]=lm.fit$coef[2]
+    }
+  beta0[i]=lm.fit$coef[1]
+}
+plot(1:1000, beta0,type = "l", ylim = c(-5,20), col="violetred", lwd=3)
+lines(1:1000, beta1, col="turquoise",lwd=3)
+lines(1:1000, beta2, col="seagreen" ,lwd=3)
+```
+
+#f
+```{r}
+lm.fit=lm(y~x1+x2)
+plot(1:1000, beta0,type = "l", ylim = c(-5,20), col="violetred", lwd=4)
+lines(1:1000, beta1, col="turquoise",lwd=4)
+lines(1:1000, beta2, col="seagreen" ,lwd=4)
+abline(h=lm.fit$coef[1], lwd=2, col="grey80")
+abline(h=lm.fit$coef[2], lwd=2, col="grey80")
+abline(h=lm.fit$coef[3], lwd=2, col="grey80")
+```
+
+#g
+```{r}
+lm.fit=lm(y~x1+x2)
+plot(1:5, beta0[1:5],type = "l", ylim = c(-5,20), col="violetred", lwd=4)
+lines(1:5, beta1[1:5], col="turquoise",lwd=4)
+lines(1:5, beta2[1:5], col="seagreen" ,lwd=4)
+abline(h=lm.fit$coef[1], lwd=2, col="grey80")
+abline(h=lm.fit$coef[2], lwd=2, col="grey80")
+abline(h=lm.fit$coef[3], lwd=2, col="grey80")
+```
+
+#
+2 iterations
+
+# Theory
+
+# 7.9.5
+
+# a
+g^2 because it is a higher order polynomial it can accomodate the data better than g^1
+
+# b
+g^1 since g^2 is a higher order it is more likely to suffer from overfitting
+
+# c
+g^1 and g^2 are identical when lam=0
